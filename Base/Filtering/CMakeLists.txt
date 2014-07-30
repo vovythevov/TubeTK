@@ -35,6 +35,7 @@ set( TubeTK_Base_Filtering_H_Files
   itktubeExtractTubePointsSpatialObjectFilter.h
   itktubeFFTGaussianDerivativeIFFTFilter.h
   itktubeGaussianDerivativeImageSource.h
+  itktubeNormalizeSpatialObjectFilter.h
   itktubePadImageFilter.h
   itktubeRegionFromReferenceImageFilter.h
   itktubeSheetnessMeasureImageFilter.h
@@ -55,6 +56,7 @@ set( TubeTK_Base_Filtering_HXX_Files
   itktubeExtractTubePointsSpatialObjectFilter.hxx
   itktubeFFTGaussianDerivativeIFFTFilter.hxx
   itktubeGaussianDerivativeImageSource.hxx
+  itktubeNormalizeSpatialObjectFilter.hxx
   itktubePadImageFilter.hxx
   itktubeRegionFromReferenceImageFilter.hxx
   itktubeSheetnessMeasureImageFilter.hxx
