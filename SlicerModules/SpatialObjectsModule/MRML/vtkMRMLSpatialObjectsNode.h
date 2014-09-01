@@ -40,6 +40,7 @@ limitations under the License.
 
 // Spatial Objects includes
 #include <vtkSlicerSpatialObjectsModuleMRMLExport.h>
+#include <vtkVersion.h>
 #include <itkGroupSpatialObject.h>
 
 class vtkMRMLSpatialObjectsDisplayNode;
@@ -108,7 +109,11 @@ public:
 
   ///
   /// Get the subsampled PolyData converted from the real data in the node.
-  virtual vtkPolyData* GetFilteredPolyData( void );
+#if VTK_MAJOR_VERSION <= 5
+   virtual vtkPolyData* GetFilteredPolyData( void );
+#else
+  virtual vtkAlgorithmOutput* GetFilteredPolyDataConnection( void );
+#endif
 
   ///
   /// Get associated line display node or NULL if not set.

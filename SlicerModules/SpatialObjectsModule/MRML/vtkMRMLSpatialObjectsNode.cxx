@@ -179,19 +179,32 @@ void vtkMRMLSpatialObjectsNode::UpdateReferences( void )
       SafeDownCast(this->GetNthDisplayNode(ii));
     if(node)
       {
+#if VTK_MAJOR_VERSION <= 5
       node->SetInputPolyData(this->GetFilteredPolyData());
+#else
+      node->SetInputPolyDataConnection(this->GetFilteredPolyDataConnection());
+#endif
       }
     }
 
   Superclass::UpdateReferences();
 }
 
+#if VTK_MAJOR_VERSION <= 5
 //------------------------------------------------------------------------------
 vtkPolyData* vtkMRMLSpatialObjectsNode::GetFilteredPolyData( void )
 {
   return this->PolyData;
   //return this->CleanPolyDataPostSubsampling->GetOutput();
 }
+#else
+//------------------------------------------------------------------------------
+vtkAlgorithmOutput* vtkMRMLSpatialObjectsNode::
+GetFilteredPolyDataConnection( void )
+{
+  return this->GetPolyDataConnection();
+}
+#endif
 
 //------------------------------------------------------------------------------
 vtkMRMLSpatialObjectsDisplayNode* vtkMRMLSpatialObjectsNode::
@@ -274,7 +287,11 @@ AddLineDisplayNode( void )
       node->SetAndObserveColorNodeID("vtkMRMLColorTableNodeRainbow");
 
       this->AddAndObserveDisplayNodeID(node->GetID());
+#if VTK_MAJOR_VERSION <= 5
       node->SetInputPolyData(this->GetFilteredPolyData());
+#else
+      node->SetInputPolyDataConnection(this->GetFilteredPolyDataConnection());
+#endif
       }
     }
 
@@ -301,7 +318,11 @@ AddTubeDisplayNode( void )
       node->SetAndObserveColorNodeID("vtkMRMLColorTableNodeRainbow");
 
       this->AddAndObserveDisplayNodeID(node->GetID());
+#if VTK_MAJOR_VERSION <= 5
       node->SetInputPolyData(this->GetFilteredPolyData());
+#else
+      node->SetInputPolyDataConnection(this->GetFilteredPolyDataConnection());
+#endif
       }
     }
 
@@ -328,7 +349,11 @@ AddGlyphDisplayNode( void )
       node->SetAndObserveColorNodeID("vtkMRMLColorTableNodeRainbow");
 
       this->AddAndObserveDisplayNodeID(node->GetID());
+#if VTK_MAJOR_VERSION <= 5
       node->SetInputPolyData(this->GetFilteredPolyData());
+#else
+      node->SetInputPolyDataConnection(this->GetFilteredPolyDataConnection());
+#endif
       }
     }
 
@@ -395,7 +420,12 @@ void vtkMRMLSpatialObjectsNode::PrepareSubsampling( void )
   this->CleanPolyDataPostSubsampling->ConvertStripsToPolysOff();
   this->CleanPolyDataPostSubsampling->PointMergingOff();
 
+#if VTK_MAJOR_VERSION <= 5
   this->CleanPolyDataPostSubsampling->SetInput(this->PolyData);
+#else
+  this->CleanPolyDataPostSubsampling->SetInputConnection(
+    this->GetPolyDataConnection());
+#endif
 }
 
 //------------------------------------------------------------------------------
@@ -411,18 +441,30 @@ void vtkMRMLSpatialObjectsNode::UpdateSubsampling( void )
   vtkMRMLSpatialObjectsDisplayNode *node = this->GetLineDisplayNode();
   if(node != NULL)
     {
+#if VTK_MAJOR_VERSION <= 5
     node->SetInputPolyData(this->GetFilteredPolyData());
+#else
+    node->SetInputPolyDataConnection(this->GetFilteredPolyDataConnection());
+#endif
     }
 
   node = this->GetTubeDisplayNode();
   if(node != NULL)
     {
+#if VTK_MAJOR_VERSION <= 5
     node->SetInputPolyData(this->GetFilteredPolyData());
+#else
+    node->SetInputPolyDataConnection(this->GetFilteredPolyDataConnection());
+#endif
     }
   node = this->GetGlyphDisplayNode();
   if(node != NULL)
     {
+#if VTK_MAJOR_VERSION <= 5
     node->SetInputPolyData(this->GetFilteredPolyData());
+#else
+    node->SetInputPolyDataConnection(this->GetFilteredPolyDataConnection());
+#endif
     }
 
   this->InvokeEvent(vtkMRMLModelNode::PolyDataModifiedEvent, this);
